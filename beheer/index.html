@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>Sparta 35+ — Zet jezelf op aanwezig</title>
+<style>
+:root{
+  --bg:#0f172a; --panel:#1e293b; --panel2:#111c33; --line:#334155;
+  --txt:#e2e8f0; --muted:#94a3b8;
+  --green:#22c55e; --greenbg:#0f3d24;
+  --amber:#f59e0b; --amberbg:#3d2f0a;
+  --red:#ef4444; --redbg:#3d1414;
+  --grey:#475569; --greybg:#1b2536;
+  --accent:#38bdf8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:16px;
+  padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 120px}
+header{margin-bottom:18px}
+h1{margin:0;font-size:22px;line-height:1.25}
+h1 .sub{display:block;font-size:13px;color:var(--muted);font-weight:400;margin-top:5px}
+a{color:var(--accent)}
+
+.note{border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;line-height:1.5}
+.note.info{background:#0e2a4d;border:1px solid #1d5b8f;color:#bae6fd}
+.note.warn{background:#3d2f0a;border:1px solid #92670a;color:#fde68a}
+.note b{color:#fff}
+
+.step{margin-bottom:8px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.person{background:var(--panel);border:1px solid var(--line);color:var(--txt);
+  border-radius:12px;padding:16px 8px;font-size:16px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:border-color .12s,background .12s}
+.person:hover{border-color:var(--accent)}
+.person .kp{display:block;font-size:11px;color:var(--accent);font-weight:500;margin-top:3px}
+
+.whobar{display:flex;align-items:center;gap:10px;background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:18px}
+.whobar .nm{font-size:17px;font-weight:600}
+.whobar .lbl{font-size:12px;color:var(--muted)}
+.whobar button{margin-left:auto;background:transparent;border:1px solid var(--line);
+  color:var(--muted);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.whobar button:hover{border-color:var(--accent);color:var(--accent)}
+
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.quick button{flex:1 1 auto;background:var(--panel2);border:1px solid var(--line);color:var(--muted);
+  border-radius:10px;padding:11px 10px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600}
+.quick button:hover{border-color:var(--accent);color:var(--accent)}
+
+.match{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;margin-bottom:10px}
+.match.next{border-color:var(--accent)}
+.match .top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+.match .dt{font-weight:600;font-size:15px}
+.match .opp{font-size:15px}
+.match .meta{font-size:12px;color:var(--muted);margin-bottom:11px}
+.badge{font-size:10px;padding:1px 6px;border-radius:5px;display:inline-block;vertical-align:middle}
+.badge.home{background:#0e2a4d;color:#7dd3fc}
+.badge.away{background:#3a2440;color:#f0abfc}
+.badge.nextb{background:#13314a;color:var(--accent);border:1px solid var(--accent)}
+
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--panel2);color:var(--muted);
+  border-radius:10px;padding:13px 6px;font-size:14px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:all .12s;min-height:52px}
+.opt .ic{display:block;font-size:19px;margin-bottom:2px}
+.opt:hover{border-color:var(--muted)}
+.opt.sel-g{background:var(--greenbg);border-color:var(--green);color:var(--green)}
+.opt.sel-a{background:var(--amberbg);border-color:var(--amber);color:var(--amber)}
+.opt.sel-r{background:var(--redbg);border-color:var(--red);color:var(--red)}
+
+.src{font-size:11px;color:var(--muted);margin-top:9px;display:flex;align-items:center;gap:5px}
+.src.changed{color:var(--accent)}
+
+.savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(15,23,42,.94);
+  backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:20}
+.savebar .inner{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.savebar .cnt{font-size:13px;color:var(--muted);flex:1}
+.save{background:var(--green);border:none;color:#052e16;border-radius:10px;
+  padding:14px 26px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.save:disabled{background:var(--grey);color:#94a3b8;cursor:default}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;z-index:30;
+  background:var(--panel);border:1px solid var(--green);color:var(--green);
+  border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.err{border-color:var(--red);color:var(--red)}
+.toast.show{opacity:1}
+
+.foot{margin-top:22px;font-size:12px;color:var(--muted);line-height:1.6}
+.hide{display:none !important}
+.center{text-align:center;color:var(--muted);padding:36px 0;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Zet jezelf op aanwezig
+      <span class="sub">Sparta Nijkerk 35+1 &middot; 1e klasse A10 &middot; najaar 2026</span></h1>
+  </header>
+
+  <div id="preview" class="note warn hide">
+    <b>Proefstand.</b> Er is nog geen server gekoppeld, dus je keuzes blijven alleen op dit
+    apparaat staan en komen nog niet in het teamoverzicht.
+  </div>
+
+  <div id="boot" class="center">Programma laden&hellip;</div>
+
+  <section id="who" class="hide">
+    <div class="step">Wie ben je?</div>
+    <div id="people" class="people"></div>
+  </section>
+
+  <section id="app" class="hide">
+    <div class="whobar">
+      <div>
+        <div class="lbl">Je vult in als</div>
+        <div class="nm" id="whoName"></div>
+      </div>
+      <button type="button" id="switch">Ben ik niet</button>
+    </div>
+
+    <div class="note info">
+      Heb je de Outlook-uitnodiging al beantwoord? Dan staat het hieronder al goed en hoef je
+      niets te doen. Kwam je reactie er niet doorheen, tik dan gewoon je keuze aan.
+    </div>
+
+    <div class="quick">
+      <button type="button" data-all="g">&#9989; Alles aanwezig</button>
+      <button type="button" data-all="r">&#10060; Alles afwezig</button>
+      <button type="button" id="undo">&#8617; Terugzetten</button>
+    </div>
+
+    <div class="step">Komende toernooien</div>
+    <div id="matches"></div>
+
+    <div class="foot">
+      Je keuze overschrijft wat er nu in het overzicht staat. Beantwoord je later alsnog de
+      Outlook-uitnodiging, dan wint die weer &mdash; de nieuwste reactie telt altijd.
+      <br>Terug naar het volledige <a href="../">teamoverzicht</a>.
+    </div>
+  </section>
+
+</div>
+
+<div class="savebar hide" id="savebar">
+  <div class="inner">
+    <div class="cnt" id="cnt"></div>
+    <button class="save" id="save" disabled>Opslaan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var API  = "https://voetbal-beschikbaarheid.godwindejong.workers.dev";
+var TEAM = "sparta";
+
+var LS_ME  = "sparta-beheer-wie";
+var LS_PRE = "sparta-beheer-proef";
+
+function $(id){ return document.getElementById(id); }
+var SYM = { g:{ic:"\u2705",lb:"Aanwezig"}, a:{ic:"\u2753",lb:"Misschien"}, r:{ic:"\u274C",lb:"Afwezig"} };
+
+var data = null;
+var me = null;
+var base = {};
+var pick = {};
+var upcoming = [];
+
+function toast(msg, isErr){
+  var t = $("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (isErr ? " err" : "");
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.className = "toast" + (isErr ? " err" : ""); }, 2600);
+}
+
+function previewStore(){
+  try { return JSON.parse(localStorage.getItem(LS_PRE) || "{}"); } catch(e){ return {}; }
+}
+
+function loadOverrides(){
+  if (!API) return Promise.resolve(previewStore());
+  return fetch(API.replace(/\/$/,"") + "/overrides?team=" + encodeURIComponent(TEAM),
+               { headers:{ accept:"application/json" }, cache:"no-store" })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+}
+
+function boot(){
+  if (!API) $("preview").classList.remove("hide");
+  fetch("../data.json?t=" + Date.now(), { cache:"no-store" })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(function(d){
+      data = d;
+      return loadOverrides().catch(function(){ return {}; });
+    })
+    .then(function(ov){
+      data._ov = ov || {};
+      var today = new Date().toISOString().slice(0,10);
+      upcoming = data.matches.filter(function(m){ return (m.start||"").slice(0,10) >= today; });
+      if (!upcoming.length) upcoming = data.matches.slice(-1);
+      $("boot").classList.add("hide");
+      var saved = localStorage.getItem(LS_ME);
+      if (saved && data.players.indexOf(saved) >= 0) start(saved);
+      else renderPeople();
+    })
+    .catch(function(e){
+      $("boot").innerHTML = "Kon het programma niet laden.<br><small>" + e.message + "</small>";
+    });
+}
+
+function renderPeople(){
+  $("app").classList.add("hide");
+  $("savebar").classList.add("hide");
+  $("who").classList.remove("hide");
+  $("people").innerHTML = data.players.map(function(p){
+    var k = data.keeperRank && data.keeperRank[p];
+    return '<button type="button" class="person" data-p="' + p + '">' + p +
+           (k ? '<span class="kp">\uD83E\uDDE4 ' + k + '</span>' : '') + '</button>';
+  }).join("");
+  Array.prototype.forEach.call($("people").querySelectorAll(".person"), function(b){
+    b.onclick = function(){ localStorage.setItem(LS_ME, b.dataset.p); start(b.dataset.p); };
+  });
+}
+
+function start(player){
+  me = player;
+  $("who").classList.add("hide");
+  $("app").classList.remove("hide");
+  $("savebar").classList.remove("hide");
+  $("whoName").textContent = me;
+
+  base = {}; pick = {};
+  var mine = data._ov[me] || {};
+  upcoming.forEach(function(m){
+    var fromWeb = mine[m.subject] && mine[m.subject].st;
+    base[m.subject] = fromWeb || (data.status[m.subject] && data.status[m.subject][me]) || "n";
+  });
+  renderMatches();
+}
+
+function renderMatches(){
+  $("matches").innerHTML = upcoming.map(function(m, i){
+    var cur = pick[m.subject] || base[m.subject];
+    var changed = pick[m.subject] && pick[m.subject] !== base[m.subject];
+    var src = changed
+      ? '<span class="src changed">\u270B nieuw: ' + SYM[pick[m.subject]].lb + ' \u2014 nog niet opgeslagen</span>'
+      : '<span class="src">' + (base[m.subject] === "n"
+          ? "nog geen reactie van je bekend"
+          : "nu bekend: " + SYM[base[m.subject]].lb) + '</span>';
+
+    var opts = ["g","a","r"].map(function(s){
+      return '<button type="button" class="opt' + (cur === s ? " sel-" + s : "") +
+        '" data-s="' + s + '" data-m="' + i + '"><span class="ic">' + SYM[s].ic + '</span>' +
+        SYM[s].lb + '</button>';
+    }).join("");
+
+    return '<div class="match' + (i === 0 ? " next" : "") + '">' +
+      '<div class="top"><span class="dt">' + (m.datum || m.start.slice(0,10)) + ' \u00b7 ' +
+        (m.tijd || m.start.slice(11,16)) + '</span>' +
+        '<span class="opp">' + (m.round || "") + ' \u00b7 ' + (m.city || "") + '</span>' +
+        '<span class="badge ' + (m.thuis ? "home" : "away") + '">' + (m.thuis ? "THUIS" : "UIT") + '</span>' +
+        (i === 0 ? '<span class="badge nextb">EERSTVOLGENDE</span>' : '') +
+      '</div>' +
+      '<div class="meta">' + (m.venue || "") + '</div>' +
+      '<div class="opts">' + opts + '</div>' + src + '</div>';
+  }).join("");
+
+  Array.prototype.forEach.call($("matches").querySelectorAll(".opt"), function(b){
+    b.onclick = function(){
+      var s = upcoming[+b.dataset.m].subject;
+      if (pick[s] === b.dataset.s) delete pick[s];        // nogmaals tikken = keuze intrekken
+      else pick[s] = b.dataset.s;
+      renderMatches();
+    };
+  });
+  updateBar();
+}
+
+function changes(){
+  return Object.keys(pick).filter(function(s){ return pick[s] && pick[s] !== base[s]; });
+}
+
+function updateBar(){
+  var n = changes().length;
+  $("save").disabled = n === 0;
+  $("cnt").textContent = n === 0 ? "Niets gewijzigd"
+    : n + (n === 1 ? " toernooi aangepast" : " toernooien aangepast");
+}
+
+$("switch").onclick = function(){ localStorage.removeItem(LS_ME); pick = {}; renderPeople(); };
+$("undo").onclick   = function(){ pick = {}; renderMatches(); };
+Array.prototype.forEach.call(document.querySelectorAll("[data-all]"), function(b){
+  b.onclick = function(){
+    upcoming.forEach(function(m){
+      if (base[m.subject] !== b.dataset.all) pick[m.subject] = b.dataset.all;
+      else delete pick[m.subject];
+    });
+    renderMatches();
+  };
+});
+
+$("save").onclick = function(){
+  var list = changes();
+  if (!list.length) return;
+  var btn = $("save");
+  btn.disabled = true; btn.textContent = "Opslaan\u2026";
+
+  var ts = Date.now();
+  var perMatch = {};
+  list.forEach(function(s){ perMatch[s] = { st: pick[s], ts: ts }; });
+  var payload = { team: TEAM, player: me, ts: ts, matches: perMatch };
+
+  var done = function(){
+    list.forEach(function(s){ base[s] = pick[s]; });
+    pick = {};
+    renderMatches();
+    toast("Opgeslagen \u2014 bedankt " + me + "!");
+  };
+  var fail = function(e){ toast("Opslaan mislukt: " + e.message, true); };
+  var fin  = function(){ btn.textContent = "Opslaan"; updateBar(); };
+
+  if (API) {
+    fetch(API.replace(/\/$/,"") + "/overrides", {
+      method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify(payload)
+    }).then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+    }).then(done).catch(fail).then(fin, fin);
+  } else {
+    try {
+      var store = previewStore();
+      var cur = store[me] || {};
+      Object.keys(perMatch).forEach(function(k){ cur[k] = perMatch[k]; });
+      store[me] = cur;
+      localStorage.setItem(LS_PRE, JSON.stringify(store));
+      data._ov = store;
+      done();
+    } catch(e){ fail(e); }
+    fin();
+  }
+};
+
+boot();
+</script>
+</body>
+</html>
