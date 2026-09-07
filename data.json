@@ -1,7 +1,7 @@
 {
  "team": "sparta",
  "teamLabel": "Sparta Nijkerk 35+1",
- "updated": "2026-09-07T11:59:35.250Z",
+ "updated": "2026-09-07T12:05:25.247Z",
  "players": [
   "Maurits",
   "Silvester",
@@ -82,7 +82,7 @@
    "Marco": "g",
    "Roy": "g",
    "Jelle-Jaap": "g",
-   "Sander": "n",
+   "Sander": "r",
    "Stefan M.": "n",
    "Stefan V.": "g",
    "Arjo": "g",
@@ -95,7 +95,7 @@
    "Marco": "a",
    "Roy": "r",
    "Jelle-Jaap": "g",
-   "Sander": "n",
+   "Sander": "r",
    "Stefan M.": "n",
    "Stefan V.": "g",
    "Arjo": "g",
@@ -108,7 +108,7 @@
    "Marco": "g",
    "Roy": "g",
    "Jelle-Jaap": "n",
-   "Sander": "n",
+   "Sander": "g",
    "Stefan M.": "n",
    "Stefan V.": "g",
    "Arjo": "g",
@@ -121,7 +121,7 @@
    "Marco": "g",
    "Roy": "g",
    "Jelle-Jaap": "n",
-   "Sander": "n",
+   "Sander": "g",
    "Stefan M.": "n",
    "Stefan V.": "g",
    "Arjo": "g",
@@ -134,7 +134,7 @@
    "Marco": "g",
    "Roy": "g",
    "Jelle-Jaap": "n",
-   "Sander": "n",
+   "Sander": "g",
    "Stefan M.": "n",
    "Stefan V.": "g",
    "Arjo": "r",
@@ -144,19 +144,24 @@
  },
  "manual": {
   "Sparta 35+ · Toernooi R1 · Baarn": [
-   "Silvester"
+   "Silvester",
+   "Sander"
   ],
   "Sparta 35+ · Toernooi R2 · Amersfoort": [
-   "Silvester"
+   "Silvester",
+   "Sander"
   ],
   "Sparta 35+ · Toernooi R3 · Nijkerk (thuis)": [
-   "Silvester"
+   "Silvester",
+   "Sander"
   ],
   "Sparta 35+ · Toernooi R4 · Huizen": [
-   "Silvester"
+   "Silvester",
+   "Sander"
   ],
   "Sparta 35+ · Toernooi R5 · Bunschoten-Spakenburg": [
-   "Silvester"
+   "Silvester",
+   "Sander"
   ]
  }
 }
