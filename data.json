@@ -1,7 +1,7 @@
 {
  "team": "sparta",
  "teamLabel": "Sparta Nijkerk 35+1",
- "updated": "2026-09-15T07:20:37.540Z",
+ "updated": "2026-09-16T13:58:23.355Z",
  "players": [
   "Maurits",
   "Silvester",
@@ -13,6 +13,7 @@
   "Stefan V.",
   "Arjo",
   "Gerbrand",
+  "Kumar",
   "Godwin"
  ],
  "keepers": [
@@ -87,6 +88,7 @@
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "r",
+   "Kumar": "n",
    "Godwin": "r"
   },
   "Sparta 35+ · Toernooi R2 · Amersfoort": {
@@ -100,6 +102,7 @@
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "g",
+   "Kumar": "n",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R3 · Nijkerk (thuis)": {
@@ -113,6 +116,7 @@
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "g",
+   "Kumar": "n",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R4 · Huizen": {
@@ -126,6 +130,7 @@
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "g",
+   "Kumar": "n",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R5 · Bunschoten-Spakenburg": {
@@ -139,6 +144,7 @@
    "Stefan V.": "g",
    "Arjo": "r",
    "Gerbrand": "g",
+   "Kumar": "n",
    "Godwin": "g"
   }
  },
