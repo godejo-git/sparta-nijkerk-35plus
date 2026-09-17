@@ -76,6 +76,9 @@ a{color:var(--accent)}
 
 .src{font-size:11px;color:var(--muted);margin-top:9px;display:flex;align-items:center;gap:5px}
 .src.changed{color:var(--accent)}
+.clr{display:block;width:100%;margin-top:8px;background:none;border:1px dashed var(--line);
+  color:var(--muted);border-radius:8px;padding:8px;font-size:12px;font-family:inherit;cursor:pointer}
+.clr:hover{border-color:var(--red);color:var(--red)}
 
 .savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(15,23,42,.94);
   backdrop-filter:blur(8px);border-top:1px solid var(--line);
@@ -167,11 +170,12 @@ var LS_ME  = "sparta-beheer-wie";
 var LS_PRE = "sparta-beheer-proef";
 
 function $(id){ return document.getElementById(id); }
-var SYM = { g:{ic:"\u2705",lb:"Aanwezig"}, a:{ic:"\u2753",lb:"Misschien"}, r:{ic:"\u274C",lb:"Afwezig"} };
+var SYM = { g:{ic:"\u2705",lb:"Aanwezig"}, a:{ic:"\u2753",lb:"Misschien"}, r:{ic:"\u274C",lb:"Afwezig"}, n:{ic:"\u2014",lb:"Geen reactie"} };
 
 var data = null;
 var me = null;
 var base = {};
+var mailBase = {};
 var pick = {};
 var upcoming = [];
 
@@ -238,11 +242,14 @@ function start(player){
   $("savebar").classList.remove("hide");
   $("whoName").textContent = me;
 
-  base = {}; pick = {};
+  base = {}; pick = {}; mailBase = {};
   var mine = data._ov[me] || {};
   upcoming.forEach(function(m){
     var fromWeb = mine[m.subject] && mine[m.subject].st;
-    base[m.subject] = fromWeb || (data.status[m.subject] && data.status[m.subject][me]) || "n";
+    // Wat er zonder handmatige invoer zou staan (de echte Outlook-reactie). Nodig zodat
+    // "wissen" terugvalt op die reactie i.p.v. onterecht "geen reactie" te tonen.
+    mailBase[m.subject] = (data.status[m.subject] && data.status[m.subject][me]) || "n";
+    base[m.subject] = fromWeb || mailBase[m.subject];
   });
   renderMatches();
 }
@@ -252,7 +259,8 @@ function renderMatches(){
     var cur = pick[m.subject] || base[m.subject];
     var changed = pick[m.subject] && pick[m.subject] !== base[m.subject];
     var src = changed
-      ? '<span class="src changed">\u270B nieuw: ' + SYM[pick[m.subject]].lb + ' \u2014 nog niet opgeslagen</span>'
+      ? '<span class="src changed">\u270B ' + (pick[m.subject] === "n"
+          ? "wordt gewist" : "nieuw: " + SYM[pick[m.subject]].lb) + ' \u2014 nog niet opgeslagen</span>'
       : '<span class="src">' + (base[m.subject] === "n"
           ? "nog geen reactie van je bekend"
           : "nu bekend: " + SYM[base[m.subject]].lb) + '</span>';
@@ -263,6 +271,11 @@ function renderMatches(){
         SYM[s].lb + '</button>';
     }).join("");
 
+    // Wissen mag alleen als er iets TE wissen valt, anders is het een dode knop.
+    var clr = (cur !== "n")
+      ? '<button type="button" class="clr" data-clr="' + i + '">\u2716 Wis mijn antwoord (terug naar geen reactie)</button>'
+      : '';
+
     return '<div class="match' + (i === 0 ? " next" : "") + '">' +
       '<div class="top"><span class="dt">' + (m.datum || m.start.slice(0,10)) + ' \u00b7 ' +
         (m.tijd || m.start.slice(11,16)) + '</span>' +
@@ -271,14 +284,30 @@ function renderMatches(){
         (i === 0 ? '<span class="badge nextb">EERSTVOLGENDE</span>' : '') +
       '</div>' +
       '<div class="meta">' + (m.venue || "") + '</div>' +
-      '<div class="opts">' + opts + '</div>' + src + '</div>';
+      '<div class="opts">' + opts + '</div>' + clr + src + '</div>';
   }).join("");
 
   Array.prototype.forEach.call($("matches").querySelectorAll(".opt"), function(b){
     b.onclick = function(){
       var s = upcoming[+b.dataset.m].subject;
-      if (pick[s] === b.dataset.s) delete pick[s];        // nogmaals tikken = keuze intrekken
-      else pick[s] = b.dataset.s;
+      var cur = pick[s] || base[s];
+      // Nogmaals op je eigen keuze tikken = intrekken. Stond die keuze al OPGESLAGEN,
+      // dan moet er een expliciete "n" naar de server, anders blijft de oude waarde staan.
+      if (cur === b.dataset.s) {
+        if (base[s] === "n") delete pick[s];   // was nog niet opgeslagen: gewoon ongedaan maken
+        else pick[s] = "n";                    // wel opgeslagen: intrekken bij de server
+      } else {
+        pick[s] = b.dataset.s;
+      }
+      renderMatches();
+    };
+  });
+
+  Array.prototype.forEach.call($("matches").querySelectorAll(".clr"), function(b){
+    b.onclick = function(){
+      var s = upcoming[+b.dataset.clr].subject;
+      if (base[s] === "n") delete pick[s];
+      else pick[s] = "n";
       renderMatches();
     };
   });
@@ -320,7 +349,8 @@ $("save").onclick = function(){
   var payload = { team: TEAM, player: me, ts: ts, matches: perMatch };
 
   var done = function(){
-    list.forEach(function(s){ base[s] = pick[s]; });
+    // Na "intrekken" valt de cel terug op de echte Outlook-reactie (vaak "geen reactie").
+    list.forEach(function(s){ base[s] = (pick[s] === "n") ? (mailBase[s] || "n") : pick[s]; });
     pick = {};
     renderMatches();
     toast("Opgeslagen \u2014 bedankt " + me + "!");
@@ -332,13 +362,24 @@ $("save").onclick = function(){
     fetch(API.replace(/\/$/,"") + "/overrides", {
       method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify(payload)
     }).then(function(r){
-      if (!r.ok) throw new Error("HTTP " + r.status);
+      // Toon de ECHTE reden. Een kale "HTTP 400" liet eerder niet zien dat de speler
+      // nog niet in de serverlijst stond ("onbekende speler").
+      if (r.ok) return;
+      return r.text().then(function(t){
+        var reden = "";
+        try { reden = (JSON.parse(t) || {}).error || ""; } catch(e){}
+        throw new Error(reden ? reden + " (HTTP " + r.status + ")" : "HTTP " + r.status);
+      });
     }).then(done).catch(fail).then(fin, fin);
   } else {
     try {
       var store = previewStore();
       var cur = store[me] || {};
-      Object.keys(perMatch).forEach(function(k){ cur[k] = perMatch[k]; });
+      Object.keys(perMatch).forEach(function(k){
+        // "n" = intrekken; in de proefstand betekent dat: regel weghalen.
+        if (perMatch[k].st === "n") delete cur[k];
+        else cur[k] = perMatch[k];
+      });
       store[me] = cur;
       localStorage.setItem(LS_PRE, JSON.stringify(store));
       data._ov = store;
