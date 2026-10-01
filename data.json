@@ -1,7 +1,7 @@
 {
  "team": "sparta",
  "teamLabel": "Sparta Nijkerk 35+1",
- "updated": "2026-09-28T06:58:28.667Z",
+ "updated": "2026-10-01T09:52:14.445Z",
  "players": [
   "Maurits",
   "Silvester",
@@ -92,59 +92,59 @@
    "Godwin": "r"
   },
   "Sparta 35+ · Toernooi R2 · Amersfoort": {
-   "Maurits": "n",
+   "Maurits": "r",
    "Silvester": "g",
-   "Marco": "a",
+   "Marco": "g",
    "Roy": "r",
    "Jelle-Jaap": "g",
    "Sander": "r",
    "Stefan M.": "g",
-   "Stefan V.": "g",
+   "Stefan V.": "r",
    "Arjo": "g",
    "Gerbrand": "g",
-   "Kumar": "n",
+   "Kumar": "a",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R3 · Nijkerk (thuis)": {
-   "Maurits": "n",
+   "Maurits": "g",
    "Silvester": "g",
    "Marco": "g",
    "Roy": "g",
-   "Jelle-Jaap": "n",
+   "Jelle-Jaap": "a",
    "Sander": "g",
    "Stefan M.": "g",
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "g",
-   "Kumar": "n",
+   "Kumar": "g",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R4 · Huizen": {
-   "Maurits": "n",
+   "Maurits": "g",
    "Silvester": "g",
    "Marco": "g",
    "Roy": "g",
-   "Jelle-Jaap": "n",
+   "Jelle-Jaap": "a",
    "Sander": "g",
    "Stefan M.": "g",
    "Stefan V.": "g",
    "Arjo": "g",
    "Gerbrand": "g",
-   "Kumar": "n",
+   "Kumar": "g",
    "Godwin": "g"
   },
   "Sparta 35+ · Toernooi R5 · Bunschoten-Spakenburg": {
-   "Maurits": "n",
+   "Maurits": "g",
    "Silvester": "g",
    "Marco": "g",
    "Roy": "g",
-   "Jelle-Jaap": "n",
+   "Jelle-Jaap": "a",
    "Sander": "g",
    "Stefan M.": "g",
    "Stefan V.": "g",
    "Arjo": "r",
    "Gerbrand": "g",
-   "Kumar": "n",
+   "Kumar": "g",
    "Godwin": "g"
   }
  },
@@ -158,22 +158,35 @@
   "Sparta 35+ · Toernooi R2 · Amersfoort": [
    "Silvester",
    "Sander",
-   "Stefan M."
+   "Stefan M.",
+   "Kumar",
+   "Maurits",
+   "Marco",
+   "Stefan V."
   ],
   "Sparta 35+ · Toernooi R3 · Nijkerk (thuis)": [
    "Silvester",
    "Sander",
-   "Stefan M."
+   "Stefan M.",
+   "Kumar",
+   "Maurits",
+   "Jelle-Jaap"
   ],
   "Sparta 35+ · Toernooi R4 · Huizen": [
    "Silvester",
    "Sander",
-   "Stefan M."
+   "Stefan M.",
+   "Kumar",
+   "Maurits",
+   "Jelle-Jaap"
   ],
   "Sparta 35+ · Toernooi R5 · Bunschoten-Spakenburg": [
    "Silvester",
    "Sander",
-   "Stefan M."
+   "Stefan M.",
+   "Kumar",
+   "Maurits",
+   "Jelle-Jaap"
   ]
  }
 }
