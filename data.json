@@ -1,7 +1,7 @@
 {
  "team": "sparta",
  "teamLabel": "Sparta Nijkerk 35+1",
- "updated": "2026-10-08T06:50:41.757Z",
+ "updated": "2026-10-12T06:59:25.001Z",
  "players": [
   "Maurits",
   "Silvester",
@@ -124,7 +124,7 @@
    "Silvester": "g",
    "Marco": "g",
    "Roy": "g",
-   "Jelle-Jaap": "a",
+   "Jelle-Jaap": "g",
    "Sander": "g",
    "Stefan M.": "g",
    "Stefan V.": "g",
@@ -138,7 +138,7 @@
    "Silvester": "g",
    "Marco": "g",
    "Roy": "g",
-   "Jelle-Jaap": "a",
+   "Jelle-Jaap": "g",
    "Sander": "g",
    "Stefan M.": "g",
    "Stefan V.": "g",
@@ -176,8 +176,7 @@
    "Sander",
    "Stefan M.",
    "Kumar",
-   "Maurits",
-   "Jelle-Jaap"
+   "Maurits"
   ],
   "Sparta 35+ · Toernooi R5 · Bunschoten-Spakenburg": [
    "Silvester",
