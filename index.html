@@ -98,7 +98,7 @@
   }</style></head><body>
 <div class="wrap">
  <header><h1>Sparta Nijkerk 35+ — Beschikbaarheid<span class="sub">Mannen 35+ · 1e klasse A10 · Najaar 2026 · toernooien op vrijdag</span></h1>
- <div class="updated">🔄 Laatst bijgewerkt: 09-11-2026, 08:50 · <b>read-only</b> — bron: Outlook-invites (RSVP)</div></header>
+ <div class="updated">🔄 Laatst bijgewerkt: 12-11-2026, 08:50 · <b>read-only</b> — bron: Outlook-invites (RSVP)</div></header>
 <div class="cta">
    <div class="cta-txt">
     <div class="cta-h">Staat jouw vakje nog op grijs?</div>
@@ -178,14 +178,15 @@
       });
 
       var cnt = present.length;
+      var isEvent = tr.getAttribute("data-event") === "1";
       var cc = tr.querySelector("td.ccell");
       if (cc) {
         cc.textContent = cnt;
-        cc.className = "opk ccell " + (cnt >= C.okAt ? "opk-ok" : (cnt >= C.warnAt ? "opk-warn" : "opk-bad"));
+        cc.className = "opk ccell " + (isEvent ? "" : (cnt >= C.okAt ? "opk-ok" : (cnt >= C.warnAt ? "opk-warn" : "opk-bad")));
       }
 
       var kc = tr.querySelector("td.kcell");
-      if (kc) {
+      if (kc && !isEvent) {
         var kIn = C.keepers.filter(function(k){ return present.indexOf(k) >= 0; });
         var kMb = C.keepers.filter(function(k){ return maybe.indexOf(k) >= 0; });
         if (kIn.length)      { kc.className = "opk kcell opk-ok";   kc.title = kIn.join(", "); kc.innerHTML = "\uD83E\uDDE4 " + C.keeperRank[kIn[0]]; }
